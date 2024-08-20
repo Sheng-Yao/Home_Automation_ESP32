@@ -5,10 +5,10 @@
 #include "Buzzer.h"
 
 // Replace the next variables with your SSID/Password combination
-const char* ssid = "jianing 1505-2.4Ghz";
-const char* password = "jianing1505";
+const char* ssid = "XXX";
+const char* password = "XXX";
 
-const char* mqtt_server = "192.168.100.54";
+const char* mqtt_server = "XXX";
 
 
 void setup() {
