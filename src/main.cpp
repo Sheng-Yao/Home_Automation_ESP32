@@ -40,11 +40,13 @@ void setup() {
 void loop() {
   client.loop();
   String msg;
+
+  sensors_event_t event;
   
-  msg = String(getTemperature());
+  msg = String(getTemperature(event));
   client.publish("Temperature_Level", msg.c_str());
 
-  msg = String(getHumidity());
+  msg = String(getHumidity(event));
   client.publish("Humidity_Level", msg.c_str());
 
   msg = String(isIntensityAbove());
