@@ -45,14 +45,12 @@ void getDHT22Info(enum Types type){
 
 // Temperature and Humidity data can only be obtained every 2 seconds for DHT22 while 1 second for DHT11
 
-float getTemperature(){
-    sensors_event_t event;
+float getTemperature(sensors_event_t event){
     dht.temperature().getEvent(&event);
     return event.temperature;
 }
 
-float getHumidity(){
-    sensors_event_t event;
+float getHumidity(sensors_event_t event){
     dht.humidity().getEvent(&event);
     return event.relative_humidity;
 }
