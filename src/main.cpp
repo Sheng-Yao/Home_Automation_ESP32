@@ -3,7 +3,6 @@
 #include "Temp_Humi_Function.h"
 #include "Lightning_Control.h"
 #include "Buzzer.h"
-#include "LoRa_Function.h"
 
 // Replace the next variables with your SSID/Password combination
 const char* ssid = "Infinix NOTE 30 Pro";
@@ -53,24 +52,30 @@ void loop() {
   client.loop();
   String msg;
 
-  sensors_event_t event;
-  
-  msg = String(getTemperature(event));
-  client.publish("Temperature_Level", msg.c_str());
-
-  msg = String(getHumidity(event));
-  client.publish("Humidity_Level", msg.c_str());
-
-  msg = String(isIntensityAbove());
-  client.publish("Light_Control", msg.c_str());
-
-  if(msg == "1"){
-    singleBeep();
+  if(isMQTTMessageIn){
+    if(messageBuffer == "ON"){
+      digitalWrite(WhiteLED,HIGH);
+    }else if(messageBuffer == "OFF"){
+      digitalWrite(WhiteLED,LOW);
+    }
+    isMQTTMessageIn = false;
   }
   
   if(millis() - timer >= 2500){
-    msg = String(getTemperature());
+
+    sensors_event_t event;
+    
+    msg = String(getTemperature(event));
     client.publish("Temperature_Level", msg.c_str());
 
-  delay(2000);
+    msg = String(getHumidity(event));
+    client.publish("Humidity_Level", msg.c_str());
+
+    msg = String(isIntensityAbove());
+    client.publish("Light_Control", msg.c_str());
+
+    if(msg == "1"){
+      singleBeep();
+    }
+  }
 }
