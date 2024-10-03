@@ -53,29 +53,24 @@ void loop() {
   client.loop();
   String msg;
 
-  if(isMQTTMessageIn){
-    if(messageBuffer == "OFF"){
-      digitalWrite(WhiteLED,LOW);
-    }else if(messageBuffer == "ON"){
-      digitalWrite(WhiteLED,HIGH);
-    }
-    isMQTTMessageIn = false;
+  sensors_event_t event;
+  
+  msg = String(getTemperature(event));
+  client.publish("Temperature_Level", msg.c_str());
+
+  msg = String(getHumidity(event));
+  client.publish("Humidity_Level", msg.c_str());
+
+  msg = String(isIntensityAbove());
+  client.publish("Light_Control", msg.c_str());
+
+  if(msg == "1"){
+    singleBeep();
   }
   
   if(millis() - timer >= 2500){
     msg = String(getTemperature());
     client.publish("Temperature_Level", msg.c_str());
 
-    msg = String(getHumidity());
-    client.publish("Humidity_Level", msg.c_str());
-
-    msg = String(isIntensityAbove());
-    client.publish("Light_Control", msg.c_str());
-
-    if(msg == "1"){
-      singleBeep();
-    }
-
-    timer = millis();
-  }
-} 
+  delay(2000);
+}
